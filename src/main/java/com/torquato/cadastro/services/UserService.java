@@ -42,7 +42,7 @@ public class UserService {
     private void updateData(User newObj, User obj) {
 		newObj.setName(obj.getName());
 		newObj.setEmail(obj.getEmail());
-        newObj.setSenha(obj.getSenha());
+        newObj.setPassword(obj.getPassword());
         newObj.setPhone(obj.getPhone());
 	}
 
