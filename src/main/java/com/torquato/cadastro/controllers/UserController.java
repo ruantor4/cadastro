@@ -28,36 +28,45 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
-        List<User> user = service.findAll();    
+    public ResponseEntity<List<User>> findAll() {
+        List<User> user = service.findAll();
         return ResponseEntity.ok().body(user);
-        
+
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
+    public ResponseEntity<User> findById(@PathVariable Long id) {
         User obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
-    
+
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User obj){
+    public ResponseEntity<User> create(@RequestBody User obj) {
         obj = service.insert(obj);
-        URI uri =         
-        ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();		
-	}
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@RequestBody User obj,@PathVariable Long id){
+    public ResponseEntity<User> update(@RequestBody User obj, @PathVariable Long id) {
         obj.setId(id);
         obj = service.update(obj);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> validarSenha(@RequestBody User obj){
+        Boolean valid = service.validarSenha(obj);
+         if(!valid) {
+            return ResponseEntity.accepted().build();
+         }       
+    
+            return ResponseEntity.notFound().build();
     }
 }
